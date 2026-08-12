@@ -4,92 +4,7 @@ import { InputField, PasswordInput, Button } from "../../components/ui";
 import { MailIcon, UserIcon } from "../../components/ui";
 import useAuthStore from "../../store/authStore";
 
-function PasswordStrength({ password }) {
-  const checks = [
-    {
-      label: "At least 8 characters",
-      pass: password.length >= 8,
-    },
-    {
-      label: "One uppercase letter",
-      pass: /[A-Z]/.test(password),
-    },
-    {
-      label: "One number",
-      pass: /\d/.test(password),
-    },
-    {
-      label: "One special character",
-      pass: /[^A-Za-z0-9]/.test(password),
-    },
-  ];
 
-  const score = checks.filter((c) => c.pass).length;
-
-  if (!password) return null;
-
-  const barColor =
-    score <= 1
-      ? "bg-red-500"
-      : score <= 2
-        ? "bg-amber-500"
-        : score <= 3
-          ? "bg-yellow-500"
-          : "bg-emerald-500";
-
-  const label =
-    score <= 1 ? "Weak" : score <= 2 ? "Fair" : score <= 3 ? "Good" : "Strong";
-
-  const labelColor =
-    score <= 1
-      ? "text-red-500"
-      : score <= 2
-        ? "text-amber-500"
-        : score <= 3
-          ? "text-yellow-600"
-          : "text-emerald-500";
-
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <div className="flex-1 flex gap-1">
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                i < score ? barColor : "bg-slate-200 dark:bg-slate-700"
-              }`}
-            />
-          ))}
-        </div>
-
-        <span className={`text-xs font-medium ${labelColor}`}>{label}</span>
-      </div>
-
-      <div className="grid grid-cols-2 gap-1">
-        {checks.map((c) => (
-          <div key={c.label} className="flex items-center gap-1.5">
-            <span
-              className={`w-1.5 h-1.5 rounded-full ${
-                c.pass ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"
-              }`}
-            />
-
-            <span
-              className={`text-[11px] ${
-                c.pass
-                  ? "text-emerald-600 dark:text-emerald-400"
-                  : "text-slate-400"
-              }`}
-            >
-              {c.label}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function SignUpPage({ navigate }) {
   const signup = useAuthStore((state) => state.signup);
@@ -113,9 +28,6 @@ export default function SignUpPage({ navigate }) {
       e.email = "Enter a valid email";
     }
 
-    if (password.length < 8) {
-      e.password = "Password must be at least 8 characters";
-    }
 
     if (password !== confirm) {
       e.confirm = "Passwords do not match";
@@ -181,7 +93,7 @@ export default function SignUpPage({ navigate }) {
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+       <form onSubmit={handleSubmit} className="space-y-4">
           <InputField
             label="Full name"
             type="text"
@@ -204,18 +116,14 @@ export default function SignUpPage({ navigate }) {
             autoComplete="email"
           />
 
-          <div className="space-y-2">
-            <PasswordInput
-              label="Password"
-              placeholder="Create a strong password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={errors.password}
-              autoComplete="new-password"
-            />
-
-            <PasswordStrength password={password} />
-          </div>
+          <PasswordInput
+            label="Password"
+            placeholder="Create a strong password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={errors.password}
+            autoComplete="new-password"
+          />
 
           <PasswordInput
             label="Confirm password"
@@ -236,7 +144,7 @@ export default function SignUpPage({ navigate }) {
           <button
             type="button"
             onClick={() => navigate("login")}
-            className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
+            className="text-indigo-600 cursor-pointer dark:text-indigo-400 font-semibold hover:underline"
           >
             Sign in
           </button>

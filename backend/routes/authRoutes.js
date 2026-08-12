@@ -7,8 +7,10 @@ import {
   forgotPassword,
   resetPassword,
   resendOTP,
+  changePassword,
   getMe,
   logout,
+    deleteAccount
 } from "../controllers/authController.js";
 
 import authMiddleware from "../middleware/authMiddleware.js";
@@ -27,8 +29,12 @@ router.post("/forgot-password", forgotPassword);
 
 router.post("/reset-password/:token", resetPassword);
 
+router.post("/change-password", authMiddleware, changePassword);
+
 router.get("/me", authMiddleware, getMe);
 
 router.post("/logout", logout);
+
+router.delete("/delete-account", authMiddleware, deleteAccount);
 
 export default router;

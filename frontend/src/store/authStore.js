@@ -6,46 +6,43 @@ const useAuthStore = create((set) => ({
   isAuthenticated: false,
   isLoading: true,
 
-  signup: async (userData) => {
-    const response = await api.post(
-      "/auth/signup",
-      userData
-    );
+ signup: async (userData) => {
+  const response = await api.post("/auth/signup", userData);
 
-    return response.data;
-  },
+  set({
+    pendingVerificationEmail: userData.email,
+  });
 
-  verifyEmail: async ({ email, otp }) => {
-    const response = await api.post(
-      "/auth/verify-email",
-      {
-        email,
-        otp,
-      }
-    );
+  return response.data;
+},
 
-    return response.data;
-  },
+ verifyEmail: async ({ email, otp }) => {
+  const response = await api.post("/auth/verify-email", {
+    email,
+    otp,
+  });
+
+  set({
+    user: response.data.user,
+    isAuthenticated: true,
+  });
+
+  return response.data;
+},
 
   resendOTP: async ({ email }) => {
-    const response = await api.post(
-      "/auth/resend-otp",
-      {
-        email,
-      }
-    );
+    const response = await api.post("/auth/resend-otp", {
+      email,
+    });
 
     return response.data;
   },
 
   login: async ({ email, password }) => {
-    const response = await api.post(
-      "/auth/login",
-      {
-        email,
-        password,
-      }
-    );
+    const response = await api.post("/auth/login", {
+      email,
+      password,
+    });
 
     set({
       user: response.data.user,
@@ -91,27 +88,44 @@ const useAuthStore = create((set) => ({
   },
 
   forgotPassword: async ({ email }) => {
-  const response = await api.post("/auth/forgot-password", {
-    email,
-  });
+    const response = await api.post("/auth/forgot-password", {
+      email,
+    });
 
-  return response.data;
-},
+    return response.data;
+  },
 
-resetPassword: async ({ token, password, confirmPassword }) => {
-  const response = await api.post(
-    `/auth/reset-password/${token}`,
-    {
+  resetPassword: async ({ token, password, confirmPassword }) => {
+    const response = await api.post(`/auth/reset-password/${token}`, {
       password,
       confirmPassword,
-    }
-  );
+    });
 
+    return response.data;
+  },
+
+  changePassword: async ({
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
+  }) => {
+    const response = await api.post("/auth/change-password", {
+      currentPassword,
+      newPassword,
+      confirmNewPassword,
+    });
+    return response.data;
+  },
+
+  deleteAccount: async () => {
+  const response = await api.delete("/auth/delete-account");
+  set({
+    user: null,
+    isAuthenticated: false,
+  });
   return response.data;
-},
-
-
-
+  },
+  
 }));
 
 export default useAuthStore;

@@ -22,7 +22,7 @@ export default function AuthLayout({ children }) {
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
             </div>
-            <span className="text-white font-display font-semibold text-lg tracking-tight">mern auth</span>
+            <span className="text-white font-display font-semibold text-lg tracking-tight">Mern Auth</span>
           </div>
 
           
@@ -65,7 +65,7 @@ export default function AuthLayout({ children }) {
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             </svg>
           </div>
-          <span className="font-display font-semibold text-slate-900 dark:text-white">mern auth</span>
+          <span className="font-display font-semibold text-slate-900 dark:text-white">Mern Auth</span>
         </div>
 
         <div className="flex-1 flex items-center justify-center p-6 sm:p-10">

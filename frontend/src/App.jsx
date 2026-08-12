@@ -113,9 +113,7 @@ export default function App() {
           <OverviewPage user={user} navigate={navigate} />
         )}
 
-      
-
-        {page === "settings" && <SettingsPage />}
+        {page === "settings" && <SettingsPage navigate={navigate} />}
       </DashboardLayout>
     );
   }

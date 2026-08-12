@@ -195,6 +195,7 @@ export function OTPInput({ value, onChange, error }) {
             ref={el => { refs.current[i] = el }}
             type="text"
             inputMode="numeric"
+          placeholder="0"
             maxLength={1}
             value={value[i] || ''}
             onChange={e => handleChange(i, e.target.value)}
@@ -235,7 +236,7 @@ export function Button({
   disabled,
   ...props
 }) {
-  const base = 'inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed'
+  const base = 'inline-flex cursor-pointer items-center justify-center gap-2 font-medium rounded-xl transition-all outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed'
 
   const variants = {
     primary: 'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white focus:ring-indigo-500',

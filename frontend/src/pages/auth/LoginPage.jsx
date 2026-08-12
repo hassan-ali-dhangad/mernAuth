@@ -15,36 +15,56 @@ export default function LoginPage({ navigate }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const login = useAuthStore((state) => state.login);
+ const login = useAuthStore((state) => state.login);
+const setPendingVerificationEmail = useAuthStore(
+  (state) => state.setPendingVerificationEmail
+);
+  
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  if (!email || !password) {
+    setError("Please fill in all fields.");
+    return;
+  }
 
-    setError("");
+  setLoading(true);
 
-    if (!email || !password) {
-      setError("Please fill in all fields.");
+  try {
+    await login({
+      email,
+      password,
+    });
+
+    // Login successful
+    navigate("overview");
+
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      "Invalid email or password.";
+
+    // User exists but email is not verified
+    if (
+      error.response?.status === 403 &&
+      message === "Please verify your email first"
+    ) {
+      // Save email so VerifyEmailPage knows which email to verify
+      useAuthStore.setState({
+        pendingVerificationEmail: email,
+      });
+
+      navigate("verify-email");
       return;
     }
 
-    setLoading(true);
+    setError(message);
+  } finally {
+    setLoading(false);
+  }
+};
 
-    try {
-      await login({
-        email: email.trim(),
-        password,
-      });
-
-      // Login successful
-      navigate("overview");
-    } catch (error) {
-      console.error("Login error:", error);
-
-      setError(error.response?.data?.message || "Invalid email or password.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <AuthLayout navigate={navigate}>
@@ -87,7 +107,7 @@ export default function LoginPage({ navigate }) {
               <button
                 type="button"
                 onClick={() => navigate("forgot-password")}
-                className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
+                className="text-xs cursor-pointer text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
               >
                 Forgot password?
               </button>
@@ -106,11 +126,11 @@ export default function LoginPage({ navigate }) {
 
         {/* Sign up link */}
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-          Don't have an account?{" "}
+          Don't have an account? {" "}
           <button
             type="button"
             onClick={() => navigate("signup")}
-            className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
+            className="text-indigo-600 cursor-pointer dark:text-indigo-400 font-semibold hover:underline"
           >
             Sign up
           </button>

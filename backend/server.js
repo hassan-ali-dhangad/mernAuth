@@ -20,13 +20,14 @@ app.use(
   })
 );
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.json({
-    message: "MERN Auth API is running",
+    message: "Welcome to the MERN Stack Authentication API",
   });
 });
 

@@ -15,9 +15,11 @@ export default function VerifyEmailPage({ navigate }) {
   const verifyEmail = useAuthStore((state) => state.verifyEmail);
 
   const resendOTP = useAuthStore((state) => state.resendOTP);
-
+const email = useAuthStore(
+  (state) => state.pendingVerificationEmail
+);
   // Email saved during signup
-  const email = sessionStorage.getItem("verificationEmail");
+  // const email = sessionStorage.getItem("verificationEmail");
 
   // Countdown
   useEffect(() => {
@@ -35,61 +37,48 @@ export default function VerifyEmailPage({ navigate }) {
 
   // Verify OTP
   const handleVerify = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const code = otp.join("");
+  const code = otp.join("");
 
-    if (code.length !== 6) {
-      setStatus({
-        type: "error",
-        message: "Please enter the complete 6-digit code.",
-      });
-      return;
-    }
+  if (code.length < 6) {
+    setStatus({
+      type: "error",
+      message: "Please enter the complete 6-digit code.",
+    });
+    return;
+  }
 
-    if (!email) {
-      setStatus({
-        type: "error",
-        message: "Verification email is missing. Please sign up again.",
-      });
-      return;
-    }
+  setLoading(true);
+  setStatus(null);
 
-    setLoading(true);
-    setStatus(null);
+  try {
+    await verifyEmail({
+      email,
+      otp: code,
+    });
 
-    try {
-      await verifyEmail({
-        email,
-        otp: code,
-      });
+    setStatus({
+      type: "success",
+      message: "Email verified successfully!",
+    });
 
-      setStatus({
-        type: "success",
-        message: "Email verified successfully! Redirecting to login...",
-      });
+    setTimeout(() => {
+      navigate("overview");
+    }, 800);
+  } catch (error) {
+    setStatus({
+      type: "error",
+      message:
+        error.response?.data?.message ||
+        "Invalid or expired verification code.",
+    });
 
-      // Email is no longer needed after verification
-      sessionStorage.removeItem("verificationEmail");
-
-      setTimeout(() => {
-        navigate("login");
-      }, 1500);
-    } catch (error) {
-      console.error("Verify email error:", error);
-
-      setStatus({
-        type: "error",
-        message:
-          error.response?.data?.message ||
-          "Invalid or expired verification code.",
-      });
-
-      setOtp(Array(6).fill(""));
-    } finally {
-      setLoading(false);
-    }
-  };
+    setOtp(Array(6).fill(""));
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Resend OTP
   const handleResend = async () => {
@@ -174,6 +163,7 @@ export default function VerifyEmailPage({ navigate }) {
           <OTPInput
             value={otp}
             onChange={setOtp}
+            placeholder="0"
             error={status?.type === "error" ? "" : undefined}
           />
 

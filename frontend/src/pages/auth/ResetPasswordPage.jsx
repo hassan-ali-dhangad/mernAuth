@@ -4,6 +4,7 @@ import { PasswordInput, Button, FormMessage } from "../../components/ui";
 import useAuthStore from "../../store/authStore";
 
 export default function ResetPasswordPage({ navigate }) {
+  
   const resetPassword = useAuthStore((state) => state.resetPassword);
 
   const [password, setPassword] = useState("");
@@ -24,9 +25,6 @@ export default function ResetPasswordPage({ navigate }) {
 
     const errs = {};
 
-    if (password.length < 8) {
-      errs.password = "Password must be at least 8 characters";
-    }
 
     if (password !== confirm) {
       errs.confirm = "Passwords do not match";
@@ -161,63 +159,6 @@ export default function ResetPasswordPage({ navigate }) {
             autoComplete="new-password"
           />
 
-          <div className="rounded-xl bg-slate-50 dark:bg-slate-800/50 px-4 py-3 space-y-1.5">
-            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
-              Password requirements
-            </p>
-
-            {[
-              {
-                label: "8+ characters",
-                pass: password.length >= 8,
-              },
-              {
-                label: "Uppercase letter",
-                pass: /[A-Z]/.test(password),
-              },
-              {
-                label: "Number",
-                pass: /\d/.test(password),
-              },
-              {
-                label: "Special character",
-                pass: /[^A-Za-z0-9]/.test(password),
-              },
-            ].map((r) => (
-              <div key={r.label} className="flex items-center gap-2">
-                <span
-                  className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                    r.pass ? "bg-emerald-500" : "bg-slate-200 dark:bg-slate-700"
-                  }`}
-                >
-                  {r.pass && (
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </span>
-
-                <span
-                  className={`text-xs ${
-                    r.pass
-                      ? "text-emerald-600 dark:text-emerald-400"
-                      : "text-slate-400"
-                  }`}
-                >
-                  {r.label}
-                </span>
-              </div>
-            ))}
-          </div>
 
           <Button type="submit" loading={loading} size="lg" className="w-full">
             Reset password
