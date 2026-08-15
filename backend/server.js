@@ -10,10 +10,6 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
-connectDB().catch((error) => {
-  console.error("Database initialization failed:", error.message);
-});
-
 app.use(
   cors({
     origin: [
@@ -35,6 +31,19 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+// Connect to MongoDB before handling API requests
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error("Database connection error:", error);
+    res.status(500).json({
+      message: "Database connection failed",
+    });
+  }
+});
 
 export default app;
 
