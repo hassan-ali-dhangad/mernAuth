@@ -15,9 +15,7 @@ export default function VerifyEmailPage({ navigate }) {
   const verifyEmail = useAuthStore((state) => state.verifyEmail);
 
   const resendOTP = useAuthStore((state) => state.resendOTP);
-const email = useAuthStore(
-  (state) => state.pendingVerificationEmail
-);
+  const email = useAuthStore((state) => state.pendingVerificationEmail);
   // Email saved during signup
   // const email = sessionStorage.getItem("verificationEmail");
 
@@ -37,48 +35,48 @@ const email = useAuthStore(
 
   // Verify OTP
   const handleVerify = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const code = otp.join("");
+    const code = otp.join("");
 
-  if (code.length < 6) {
-    setStatus({
-      type: "error",
-      message: "Please enter the complete 6-digit code.",
-    });
-    return;
-  }
+    if (code.length < 6) {
+      setStatus({
+        type: "error",
+        message: "Please enter the complete 6-digit code.",
+      });
+      return;
+    }
 
-  setLoading(true);
-  setStatus(null);
+    setLoading(true);
+    setStatus(null);
 
-  try {
-    await verifyEmail({
-      email,
-      otp: code,
-    });
+    try {
+      await verifyEmail({
+        email,
+        otp: code,
+      });
 
-    setStatus({
-      type: "success",
-      message: "Email verified successfully!",
-    });
+      setStatus({
+        type: "success",
+        message: "Email verified successfully!",
+      });
 
-    setTimeout(() => {
-      navigate("overview");
-    }, 800);
-  } catch (error) {
-    setStatus({
-      type: "error",
-      message:
-        error.response?.data?.message ||
-        "Invalid or expired verification code.",
-    });
+      setTimeout(() => {
+        navigate("overview");
+      }, 800);
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message:
+          error.response?.data?.message ||
+          "Invalid or expired verification code.",
+      });
 
-    setOtp(Array(6).fill(""));
-  } finally {
-    setLoading(false);
-  }
-};
+      setOtp(Array(6).fill(""));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Resend OTP
   const handleResend = async () => {
@@ -220,7 +218,7 @@ const email = useAuthStore(
         <button
           type="button"
           onClick={() => navigate("login")}
-          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors mx-auto"
+          className="flex items-center cursor-pointer gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors mx-auto"
         >
           <svg
             width="14"

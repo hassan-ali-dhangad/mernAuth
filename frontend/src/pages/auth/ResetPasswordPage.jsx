@@ -4,7 +4,6 @@ import { PasswordInput, Button, FormMessage } from "../../components/ui";
 import useAuthStore from "../../store/authStore";
 
 export default function ResetPasswordPage({ navigate }) {
-  
   const resetPassword = useAuthStore((state) => state.resetPassword);
 
   const [password, setPassword] = useState("");
@@ -24,7 +23,6 @@ export default function ResetPasswordPage({ navigate }) {
     e.preventDefault();
 
     const errs = {};
-
 
     if (password !== confirm) {
       errs.confirm = "Passwords do not match";
@@ -159,7 +157,6 @@ export default function ResetPasswordPage({ navigate }) {
             autoComplete="new-password"
           />
 
-
           <Button type="submit" loading={loading} size="lg" className="w-full">
             Reset password
           </Button>
@@ -168,7 +165,7 @@ export default function ResetPasswordPage({ navigate }) {
         <button
           type="button"
           onClick={() => navigate("login")}
-          className="flex items-center justify-center gap-1.5 w-full text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+          className="flex items-center cursor-pointer justify-center gap-1.5 w-full text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
         >
           <svg
             width="14"
