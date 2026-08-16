@@ -1,4 +1,14 @@
+import { Shield, Lock, Mail, KeyRound, UserX } from "lucide-react";
+
 export default function AuthLayout({ children }) {
+  // Features array mapping directly to Lucide Icon components
+  const features = [
+    { icon: Lock, text: "Secure authentication" },
+    { icon: Mail, text: "Email verification & OTP" },
+    { icon: KeyRound, text: "Change and forgot password" },
+    { icon: UserX, text: "Delete account permanently" },
+  ];
+
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
       {/* Left decorative panel */}
@@ -19,21 +29,10 @@ export default function AuthLayout({ children }) {
         </div>
 
         <div className="relative z-10 flex flex-col h-full">
-          {/* Logo */}
+          {/* Logo (Replaced SVG with Lucide Shield) */}
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
+              <Shield className="w-5 h-5 text-white" strokeWidth={2.5} />
             </div>
             <span className="text-white font-display font-semibold text-lg tracking-tight">
               Mern Auth
@@ -56,18 +55,14 @@ export default function AuthLayout({ children }) {
 
             {/* Feature pills */}
             <div className="mt-10 flex flex-col gap-3">
-              {[
-                { icon: "🔐", text: "Secure authentication" },
-                { icon: "📧", text: "Email verification & OTP" },
-                { icon: "🛡️", text: "Password & account security" },
-              ].map((f) => (
+              {features.map(({ icon: Icon, text }) => (
                 <div
-                  key={f.text}
+                  key={text}
                   className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3"
                 >
-                  <span className="text-lg">{f.icon}</span>
+                  <Icon className="w-5 h-5 text-white/90 shrink-0" />
                   <span className="text-sm text-white/90 font-medium">
-                    {f.text}
+                    {text}
                   </span>
                 </div>
               ))}
@@ -78,21 +73,10 @@ export default function AuthLayout({ children }) {
 
       {/* Right form panel */}
       <div className="flex-1 flex flex-col">
-        {/* Mobile logo */}
+        {/* Mobile logo (Replaced SVG with Lucide Shield) */}
         <div className="lg:hidden flex items-center gap-2.5 px-6 pt-6">
           <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
+            <Shield className="w-4 h-4 text-white" strokeWidth={2.5} />
           </div>
           <span className="font-display font-semibold text-slate-900 dark:text-white">
             Mern Auth
