@@ -15,56 +15,53 @@ export default function LoginPage({ navigate }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
- const login = useAuthStore((state) => state.login);
-const setPendingVerificationEmail = useAuthStore(
-  (state) => state.setPendingVerificationEmail
-);
-  
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+  const login = useAuthStore((state) => state.login);
+  const setPendingVerificationEmail = useAuthStore(
+    (state) => state.setPendingVerificationEmail,
+  );
 
-  if (!email || !password) {
-    setError("Please fill in all fields.");
-    return;
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  setLoading(true);
-
-  try {
-    await login({
-      email,
-      password,
-    });
-
-    // Login successful
-    navigate("overview");
-
-  } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      "Invalid email or password.";
-
-    // User exists but email is not verified
-    if (
-      error.response?.status === 403 &&
-      message === "Please verify your email first"
-    ) {
-      // Save email so VerifyEmailPage knows which email to verify
-      useAuthStore.setState({
-        pendingVerificationEmail: email,
-      });
-
-      navigate("verify-email");
+    if (!email || !password) {
+      setError("Please fill in all fields.");
       return;
     }
 
-    setError(message);
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
 
+    try {
+      await login({
+        email,
+        password,
+      });
+
+      // Login successful
+      navigate("overview");
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Invalid email or password.";
+
+      // User exists but email is not verified
+      if (
+        error.response?.status === 403 &&
+        message === "Please verify your email first"
+      ) {
+        // Save email so VerifyEmailPage knows which email to verify
+        useAuthStore.setState({
+          pendingVerificationEmail: email,
+        });
+
+        navigate("verify-email");
+        return;
+      }
+
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthLayout navigate={navigate}>
@@ -87,7 +84,7 @@ const setPendingVerificationEmail = useAuthStore(
           <InputField
             label="Email address"
             type="email"
-            placeholder="you@company.com"
+            placeholder="email@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             icon={<MailIcon />}
@@ -126,7 +123,7 @@ const setPendingVerificationEmail = useAuthStore(
 
         {/* Sign up link */}
         <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-          Don't have an account? {" "}
+          Don't have an account?{" "}
           <button
             type="button"
             onClick={() => navigate("signup")}

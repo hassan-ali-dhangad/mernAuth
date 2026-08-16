@@ -4,8 +4,6 @@ import { InputField, PasswordInput, Button } from "../../components/ui";
 import { MailIcon, UserIcon } from "../../components/ui";
 import useAuthStore from "../../store/authStore";
 
-
-
 export default function SignUpPage({ navigate }) {
   const signup = useAuthStore((state) => state.signup);
 
@@ -27,7 +25,6 @@ export default function SignUpPage({ navigate }) {
     if (!email.includes("@")) {
       e.email = "Enter a valid email";
     }
-
 
     if (password !== confirm) {
       e.confirm = "Passwords do not match";
@@ -93,7 +90,7 @@ export default function SignUpPage({ navigate }) {
         )}
 
         {/* Form */}
-       <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <InputField
             label="Full name"
             type="text"
@@ -108,7 +105,7 @@ export default function SignUpPage({ navigate }) {
           <InputField
             label="Email address"
             type="email"
-            placeholder="you@company.com"
+            placeholder="email@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             icon={<MailIcon />}
