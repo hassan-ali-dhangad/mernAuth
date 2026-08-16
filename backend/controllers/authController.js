@@ -168,7 +168,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: "Cannot find user with this email!",
       });
     }
 
@@ -247,7 +247,7 @@ export const forgotPassword = async (req, res) => {
     // const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-    
+
     await sendEmail({
       to: user.email,
       subject: "Reset your password",
