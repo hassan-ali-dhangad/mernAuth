@@ -27,7 +27,7 @@ export default function AuthLayout({ children }) {
             }}
           />
         </div>
-
+        {/*  */}
         <div className="relative z-10 flex flex-col h-full">
           {/* Logo (Replaced SVG with Lucide Shield) */}
           <div className="flex items-center gap-3">
