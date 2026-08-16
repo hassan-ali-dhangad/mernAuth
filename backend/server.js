@@ -104,6 +104,7 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
+
 connectDB();
 
 app.use(

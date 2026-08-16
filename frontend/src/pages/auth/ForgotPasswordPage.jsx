@@ -161,7 +161,7 @@ export default function ForgotPasswordPage({ navigate }) {
         <button
           type="button"
           onClick={() => navigate("login")}
-          className="flex items-center justify-center gap-1.5 w-full text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+          className="flex cursor-pointer items-center justify-center gap-1.5 w-full text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
         >
           <svg
             width="14"
